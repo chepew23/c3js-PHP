@@ -209,6 +209,19 @@ class Axis implements \JsonSerializable
     }
 
     /**
+     * Set multiline for x axis tick text
+     *
+     * @param bool $multiline
+     *
+     * @link http://c3js.org/reference.html#axis-x-tick-multiline
+     */
+    public function setXTickMultiline($multiline = false)
+    {
+      $this->ensureXTick();
+      $this->data['x']['tick']['multiline'] = $multiline;
+    }
+
+    /**
      * Show x axis outer tick
      *
      * @param bool $outer

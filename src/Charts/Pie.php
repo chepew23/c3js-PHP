@@ -14,7 +14,7 @@ class Pie implements \JsonSerializable
     /**
      * @var array
      */
-    protected $data = [];
+    private $data = [];
 
     /**
      * Show or hide label on each pie piece
@@ -50,7 +50,7 @@ class Pie implements \JsonSerializable
      *
      * @link http://c3js.org/reference.html#pie-label-threshold
      */
-    public function setLabeltThreshold($threshold = 0.05)
+    public function setLabelThreshold($threshold = 0.05)
     {
         $this->ensureLabel();
         $this->data['label']['threshold'] = $threshold;

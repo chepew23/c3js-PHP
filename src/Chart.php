@@ -497,6 +497,19 @@ class Chart
     }
 
     /**
+     * Attach a Scatter object to the Chart
+     *
+     * @param Charts\Scatter $scatter
+     *
+     * @return Chart
+     */
+    public function setScatter(Charts\Scatter $scatter)
+    {
+      $this->options['scatter'] = $scatter;
+      return $this;
+    }
+
+    /**
      * Attach a Gauge object to the Chart
      *
      * @param Charts\Gauge $gauge
@@ -522,15 +535,12 @@ class Chart
         $result = 'var ' . $var . ' = c3.generate(';
 
         if ($pretty) {
-            $body = json_encode($this->options, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK);
+        $body = $this->jsonFixedEncode($this->options, JSON_PRETTY_PRINT);
         } else {
-            $body = json_encode($this->options, JSON_NUMERIC_CHECK);
+        $body = $this->jsonFixedEncode($this->options);
         }
 
-        $body = str_replace('"function', 'function', $body);
-        $body = str_replace('}"', '}', $body);
-        $body = str_replace('\/', '/', $body);
-        $body = str_replace('\"', '"', $body);
+      $body = empty($body) ? json_encode($this->options) : $body;
 
         $result .= $body;
 
@@ -570,4 +580,19 @@ class Chart
             $this->data['regions'] = [];
         }
     }
+
+  /**
+   *
+   *
+   * @param $value
+   * @param int $options
+   * @param int $depth
+   * @return string
+   */
+  private function jsonFixedEncode($value, $options = 0, $depth = 512)
+  {
+    $strJson = htmlspecialchars(json_encode($value,$options | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK, $depth), ENT_IGNORE, 'UTF-8');
+
+    return $strJson;
+  }
 }
